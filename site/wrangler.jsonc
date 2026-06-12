@@ -1,0 +1,18 @@
+{
+  "name": "roostsocial",
+  "account_id": "ce40c57a207aaaa76ae172d63447828d",
+  "main": "src/index.js",
+  "compatibility_date": "2026-05-20",
+  "observability": { "enabled": true },
+  // Uncomment after the roostsocial.art zone is active on this account, then `wrangler deploy`:
+  // "routes": [
+  //   { "pattern": "roostsocial.art", "custom_domain": true },
+  //   { "pattern": "www.roostsocial.art", "custom_domain": true }
+  // ],
+  "d1_databases": [
+    { "binding": "DB", "database_name": "roostsocial-db", "database_id": "a915002e-e8f0-439b-b51b-37da7ecd2cfd" }
+  ],
+  "r2_buckets": [
+    { "binding": "ART", "bucket_name": "roostsocial-art" }
+  ]
+}

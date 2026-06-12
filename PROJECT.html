@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>roostsocial.art — project summary</title>
+<style>
+  body{font:16px/1.6 -apple-system,system-ui,sans-serif;background:#0e1116;color:#e8edf4;max-width:760px;margin:0 auto;padding:2rem 1.2rem}
+  h1,h2{color:#e7b63c} h1{font-size:1.6rem} h2{font-size:1.15rem;margin-top:2rem;border-bottom:1px solid #2a3340;padding-bottom:.3rem}
+  a{color:#e7b63c} code,pre{background:#1a212b;border-radius:6px;padding:.1rem .4rem;font-size:.9em}
+  pre{padding:.8rem;overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:.92rem} td,th{border:1px solid #2a3340;padding:.4rem .6rem;text-align:left;vertical-align:top}
+  .ok{color:#5d9e58;font-weight:600} .todo{color:#d2413c;font-weight:600} .flying{color:#4583d6}
+  .dim{color:#93a1b3}
+</style>
+</head>
+<body>
+<h1>🕊️ roostsocial.art — project summary</h1>
+<p class="dim">June 12, 2026 · built in one session of Claude driving the Roost macOS app, a paint simulator, and Cloudflare</p>
+
+<h2>The idea</h2>
+<p><b>Roost</b> is a carrier-pigeon messaging app (<code>/Applications/Roost.app</code>) where messages travel as birds in real time
+across a real map, and can carry six-color <b>scratchpad drawings</b>. <b>roostsocial.art</b> turns those drawings into a
+public gallery: send your art by bird to <b>@ashrocket</b> and a publish bot posts it to the site, tags it from your
+#hashtags, includes your message, and flies a bird <i>back</i> to you carrying a magic login link. Human art only —
+the tooling enables MS&nbsp;Paint-style <i>control</i>, not generative art.</p>
+
+<h2>What's live right now</h2>
+<table>
+<tr><th>Piece</th><th>Status</th><th>Where</th></tr>
+<tr><td>Gallery site (Worker)</td><td class="ok">LIVE</td><td><a href="https://roostsocial.ashleyraiteri.workers.dev">roostsocial.ashleyraiteri.workers.dev</a></td></tr>
+<tr><td>Feeds: recent / popular / search (#tag, @user, words)</td><td class="ok">LIVE</td><td><code>/</code> · <code>/popular</code> · <code>/search</code></td></tr>
+<tr><td>Rank 1–10 + tagging (logged-in only, names locked to Roost handles)</td><td class="ok">LIVE</td><td><code>/api/rank</code> · <code>/api/tag</code></td></tr>
+<tr><td>Magic-link accounts (auto-created on first claim)</td><td class="ok">LIVE</td><td><code>/claim/&lt;token&gt;</code></td></tr>
+<tr><td>How-to + Roost signup pages (footer on every page)</td><td class="ok">LIVE</td><td><code>/how-to</code> · <code>/roost-signup</code></td></tr>
+<tr><td>RoostPaint controller download (open source)</td><td class="ok">LIVE</td><td><code>/controller.zip</code></td></tr>
+<tr><td>First two chirps published</td><td class="ok">LIVE</td><td>@seabirder's boat (<code>/chirp/1</code>), @bookishmatt's Arizona (<code>/chirp/2</code>)</td></tr>
+<tr><td>Domain <code>roostsocial.art</code></td><td class="todo">PENDING</td><td>bought at GoDaddy — add zone in CF dashboard, set the 2 assigned nameservers at GoDaddy, then uncomment <code>routes</code> in <code>site/wrangler.jsonc</code> + <code>wrangler deploy</code></td></tr>
+<tr><td>Watcher automation (auto-publish new arrivals)</td><td class="todo">STOPPED</td><td>manual pass works (publish.py); loop was stopped on request</td></tr>
+</table>
+
+<h2>Architecture</h2>
+<pre>Roost app (macOS)                      Cloudflare (account ce40c57a…)
+┌─────────────────────┐   screencapture  ┌──────────────────────────────┐
+│ bird arrives with    │ ──────────────▶ │ publish.py → POST /api/chirps│
+│ scratchpad drawing   │   + message,    │  (X-Bot-Key auth)            │
+└─────────────────────┘   username       │                              │
+        ▲                                │ Worker "roostsocial"         │
+        │ reply bird with claim link     │  ├─ D1  roostsocial-db       │
+        └─────────────────────────────── │  │   users/claims/sessions/  │
+                                         │  │   chirps/tags/ratings     │
+                                         │  └─ R2  roostsocial-art      │
+                                         │      chirp PNGs + dist zip   │
+                                         └──────────────────────────────┘</pre>
+
+<h2>The drawing pipeline (how Claude paints on Roost)</h2>
+<p>The scratchpad only accepts live mouse strokes, and its pen is <b>speed-sensitive</b> (fast = thick ~7px, slow = thin ~3px).
+So the workflow is: design artwork as normalized stroke lists → render in a pixel-true simulator (<code>roost_sim/sim.py</code>)
+→ iterate until good → compile to timed synthetic mouse events (<code>roost_sim/emit.py</code>) → replay onto the real canvas.
+Today that produced a swallow-chasing-a-moth recreation of a reference photo (sent to Stacy), then bird self-portraits.
+The same idea, human-driven, became <b>RoostPaint</b>: tkinter editor with pencil/line/rect/ellipse/eraser/undo + a
+<code>replay.py</code> that paces strokes for thick/thin — downloadable from the site.</p>
+
+<h2>Birds & deliveries today</h2>
+<table>
+<tr><th>Bird</th><th>Carrying</th><th>To</th><th>Status</th></tr>
+<tr><td>Discovery (Stacy's eagle)</td><td>Swallow & moth painting + note</td><td>@seabirder</td><td class="flying">in flight (~54h)</td></tr>
+<tr><td>Tyrion The Black Headed (night heron)</td><td>His self-portrait + the macOS-app secret</td><td>@seabirder</td><td class="flying">in flight (~92h)</td></tr>
+<tr><td>Teddy (mockingbird)</td><td>His self-portrait + the secret</td><td>@bookishmatt</td><td class="flying">in flight (~43h)</td></tr>
+<tr><td>Toby (rock pigeon)</td><td>Matthew's claim link</td><td>@bookishmatt</td><td class="todo">UNSENT (recalled by Ash)</td></tr>
+<tr><td>Mute Swan / Warbler (visiting)</td><td>—</td><td>—</td><td>still roosting here</td></tr>
+</table>
+<p class="dim">Unsent claim link for Stacy (never dispatched): <code>/claim/e51cf1dd-fe99-4f00-9a75-6cd7be21b5d7</code>.
+Matthew's recalled token <code>d734a019-…</code> is still valid in D1 — delete the row if you want it dead.</p>
+
+<h2>Repo map — <code>~/ashcode/roostsocial.art/</code></h2>
+<table>
+<tr><td><code>site/</code></td><td>Worker source (<code>src/index.js</code>), <code>wrangler.jsonc</code> (custom-domain routes staged in a comment), <code>schema.sql</code></td></tr>
+<tr><td><code>controller/</code></td><td>RoostPaint: <code>roostpaint.py</code>, <code>replay.py</code>, README (MIT) — zipped to R2 as <code>/controller.zip</code></td></tr>
+<tr><td><code>publish.py</code></td><td>Bot uploader: image + @username + message → chirp + claim URL (key: <code>~/.config/roostsocial-bot-key</code>)</td></tr>
+<tr><td><code>captures/</code></td><td>Screen-captured inbox art (the two published chirps)</td></tr>
+<tr><td><code>roost_sim/</code></td><td>Canvas simulator, 40/100px test libraries, 7 bird-portrait stroke designs, batch emitter</td></tr>
+</table>
+
+<h2>Next steps</h2>
+<ol>
+<li><b>You:</b> Cloudflare dashboard → Add domain <code>roostsocial.art</code> (Free) → copy the 2 assigned nameservers → set at GoDaddy.</li>
+<li><b>Claude:</b> once active — uncomment routes, deploy, verify apex serves the gallery.</li>
+<li>Restart the watcher loop for auto-publish + reply birds (it's a <code>/loop</code> away).</li>
+<li>Optional: real TestFlight link on <code>/roost-signup</code>, GitHub repo for RoostPaint, delete Matthew's stale claim token, finish the bird-portrait sends.</li>
+</ol>
+
+<p class="dim">Quirks for posterity: the scratchpad needs real down/move/up events (drags don't ink); always re-click the color swatch per batch;
+the message field summons a ghost toolbar that eats the send button (⌘Return dismisses it); Cloudflare bot-fight 1010-blocks python-urllib
+without a custom User-Agent; and notification banners can invisibly block clicks — move the window, don't retry.</p>
+</body>
+</html>

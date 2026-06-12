@@ -1,0 +1,7 @@
+__pycache__/
+.wrangler/
+.DS_Store
+node_modules/
+tutorials/recordings/
+*.mov
+controller/
