@@ -23,3 +23,33 @@ assets. Until then: local build only, nothing deployed.
 1. `scripts/record.sh <name> <seconds>` — capture screen while driving Roost
 2. `scripts/produce.mjs <name>` — scrub + caption → the "tool" version
 3. `site/` — static page linking the six videos + written how-tos
+
+## Field notes from driving the real app (Jun 12, macOS)
+
+### Drafts (observed behavior — verify before filming)
+- Roost auto-saves an in-progress composition. Closing the bird-picker with
+  Cancel returns to the compose sheet with recipient, attachment, and text intact.
+- A draft survives navigating the compose flow (observed with a drawing
+  attached + recipient set). To resume: reopen New Message — the draft is
+  restored in place. No dedicated "Drafts" list found in the UI so far; the
+  draft lives in the compose sheet itself. (Confirm whether multiple parallel
+  drafts are kept — we observed two different recipients holding state.)
+
+### Scratch pad
+- Reach it from any message: + → Scratchpad. Six-color palette, speed-sensitive
+  pen: fast strokes thick, slow strokes thin. macOS app is far easier to draw
+  in than iOS (bigger canvas, mouse precision) — say so in the tutorial.
+- Pigeon Paint (controller/) replays precise synthetic strokes for the
+  tool-version videos.
+
+### Care minigames (Rookery → bird → Care, 1 energy/session, +3 bond, 3 rounds)
+Useful for a possible 4th tutorial; mechanics observed:
+- Preening: stroke along the glowing circles (drag, ~arc over head + lower
+  wings). Reliable 3 stars with one continuous stroke.
+- Mealtime: tap repeatedly around the bird's feet to scatter seeds — 3 stars.
+- Bath Time: a rain cloud follows the cursor; hold it over the bird — easy.
+- Echo Song / Copycat: Simon-says note/move sequences — demo plays immediately
+  at round start (recording will catch it; live agents miss it).
+- Bug Chase: "lure the butterfly" — technique unsolved (cursor-follow, drag,
+  and direct taps all scored 0). Watch the round demo when filming.
+- Jingle: grab the bell, shake it next to the bird (fast oscillation) — partial.
