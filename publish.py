@@ -11,7 +11,7 @@ import json
 import pathlib
 import urllib.request
 
-SITE = "https://roostsocial.ashleyraiteri.workers.dev"
+SITE = "https://roostsocial.art"
 KEY_PATH = pathlib.Path.home() / ".config" / "roostsocial-bot-key"
 
 
@@ -20,12 +20,14 @@ def main():
     ap.add_argument("--image", required=True)
     ap.add_argument("--username", required=True)
     ap.add_argument("--message", default="")
+    ap.add_argument("--created-with", default="", choices=["", "ios", "macos", "pigeonpaint"])
     args = ap.parse_args()
 
     body = json.dumps({
         "username": args.username,
         "message": args.message,
         "image_b64": base64.b64encode(pathlib.Path(args.image).read_bytes()).decode(),
+        "created_with": args.created_with,
     }).encode()
     req = urllib.request.Request(
         f"{SITE}/api/chirps", data=body, method="POST",

@@ -4,11 +4,10 @@
   "main": "src/index.js",
   "compatibility_date": "2026-05-20",
   "observability": { "enabled": true },
-  // Uncomment after the roostsocial.art zone is active on this account, then `wrangler deploy`:
-  // "routes": [
-  //   { "pattern": "roostsocial.art", "custom_domain": true },
-  //   { "pattern": "www.roostsocial.art", "custom_domain": true }
-  // ],
+  "routes": [
+    { "pattern": "roostsocial.art", "custom_domain": true },
+    { "pattern": "www.roostsocial.art", "custom_domain": true }
+  ],
   "d1_databases": [
     { "binding": "DB", "database_name": "roostsocial-db", "database_id": "a915002e-e8f0-439b-b51b-37da7ecd2cfd" }
   ],
