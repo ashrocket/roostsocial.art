@@ -1,0 +1,1512 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Roost Scratchpad Simulator Viewer</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f5f7;
+      --panel: #ffffff;
+      --panel-2: #eceff3;
+      --ink: #15181d;
+      --muted: #5b6472;
+      --line: #c8ced8;
+      --active: #d2413c;
+      --blue: #4583d6;
+      --green: #5d9e58;
+      --yellow: #e7b63c;
+      --shadow: 0 12px 32px rgba(21, 24, 29, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      font: 14px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      min-height: 34px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    button:hover { border-color: #7f8998; }
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 2px;
+    }
+
+    button.active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #fff;
+    }
+
+    button.danger.active,
+    button.danger:hover {
+      border-color: var(--active);
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 292px minmax(360px, 1fr) 340px;
+      gap: 14px;
+      min-height: 100vh;
+      padding: 14px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .toolbar,
+    .inspector {
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+      max-height: calc(100vh - 28px);
+    }
+
+    .section {
+      border-bottom: 1px solid var(--line);
+      padding: 12px;
+    }
+
+    .section:last-child { border-bottom: 0; }
+
+    h1,
+    h2 {
+      margin: 0;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    h1 { font-size: 1.06rem; }
+    h2 {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 750;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .muted { color: var(--muted); }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .row {
+      align-items: center;
+      display: flex;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .row.wrap { flex-wrap: wrap; }
+    .row.between { justify-content: space-between; }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 7px;
+    }
+
+    .swatch {
+      aspect-ratio: 1;
+      border-radius: 6px;
+      min-height: 34px;
+      padding: 0;
+      position: relative;
+    }
+
+    .swatch[data-color="white"] { background: #fff; }
+    .swatch[data-color="black"] { background: #111; }
+    .swatch[data-color="red"] { background: var(--active); }
+    .swatch[data-color="blue"] { background: var(--blue); }
+    .swatch[data-color="green"] { background: var(--green); }
+    .swatch[data-color="yellow"] { background: var(--yellow); }
+    .swatch.active { box-shadow: inset 0 0 0 3px #fff, 0 0 0 2px var(--ink); }
+
+    .width-toggle,
+    .file-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .file-grid button { min-width: 0; }
+
+    .etch-pad {
+      display: grid;
+      grid-template-columns: 44px 44px 44px;
+      grid-template-rows: 38px 38px 38px;
+      gap: 6px;
+      justify-content: start;
+      margin-top: 8px;
+    }
+
+    .etch-pad button { padding: 0; }
+    .etch-pad .up { grid-column: 2; grid-row: 1; }
+    .etch-pad .left { grid-column: 1; grid-row: 2; }
+    .etch-pad .right { grid-column: 3; grid-row: 2; }
+    .etch-pad .down { grid-column: 2; grid-row: 3; }
+    .etch-pad .home { grid-column: 2; grid-row: 2; }
+
+    .slider-row {
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr) 42px;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    input[type="range"] { width: 100%; }
+
+    .stage {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      min-height: calc(100vh - 28px);
+      overflow: hidden;
+    }
+
+    .stage-head,
+    .statusbar {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      padding: 10px 12px;
+    }
+
+    .statusbar {
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.88rem;
+      min-height: 42px;
+    }
+
+    .canvas-wrap {
+      align-items: center;
+      background: #dfe3e9;
+      display: flex;
+      justify-content: center;
+      min-height: 0;
+      overflow: auto;
+      padding: 18px;
+    }
+
+    .canvas-shell {
+      background: #fff;
+      border: 1px solid #aab2bf;
+      box-shadow: 0 10px 22px rgba(21, 24, 29, 0.18);
+      height: min(72vmin, 530px);
+      position: relative;
+      width: min(72vmin, 530px);
+      min-height: 280px;
+      min-width: 280px;
+    }
+
+    canvas {
+      display: block;
+      height: 100%;
+      image-rendering: auto;
+      touch-action: none;
+      width: 100%;
+    }
+
+    .canvas-shell.grid canvas {
+      background:
+        linear-gradient(to right, rgba(21,24,29,0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(21,24,29,0.06) 1px, transparent 1px);
+      background-size: 26.5px 26.5px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .stat {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.1rem;
+    }
+
+    textarea {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--ink);
+      min-height: 280px;
+      padding: 10px;
+      resize: vertical;
+      width: 100%;
+      white-space: pre;
+    }
+
+    .title-input {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      min-height: 34px;
+      padding: 6px 8px;
+      width: 100%;
+    }
+
+    .hidden { display: none; }
+
+    @media (max-width: 1120px) {
+      .app {
+        grid-template-columns: 270px minmax(360px, 1fr);
+      }
+      .inspector {
+        grid-column: 1 / -1;
+        max-height: none;
+      }
+      textarea { min-height: 220px; }
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        display: flex;
+        flex-direction: column;
+        padding: 8px;
+      }
+      .toolbar,
+      .inspector {
+        max-height: none;
+      }
+      .stage { min-height: 70vh; }
+      .canvas-shell {
+        height: min(86vw, 530px);
+        width: min(86vw, 530px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="panel toolbar" aria-label="Tools">
+      <section class="section">
+        <div class="row between">
+          <h1>Roost Scratchpad</h1>
+          <button id="newBtn" title="New drawing">New</button>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>MacPaint</h2>
+        <div class="tool-grid" id="tools">
+          <button data-tool="pencil" title="Pencil, shortcut P">Pencil</button>
+          <button data-tool="line" title="Line, shortcut L">Line</button>
+          <button data-tool="rect" title="Rectangle, shortcut R">Rect</button>
+          <button data-tool="ellipse" title="Oval, shortcut O">Oval</button>
+          <button data-tool="eraser" title="Eraser, shortcut E">Eraser</button>
+          <button id="fillBtn" title="Fill rectangle or oval, shortcut F">Fill</button>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Palette</h2>
+        <div class="color-grid" id="colors">
+          <button class="swatch" data-color="black" title="Black, shortcut 1"></button>
+          <button class="swatch" data-color="white" title="White, shortcut 2"></button>
+          <button class="swatch" data-color="red" title="Red, shortcut 3"></button>
+          <button class="swatch" data-color="blue" title="Blue, shortcut 4"></button>
+          <button class="swatch" data-color="green" title="Green, shortcut 5"></button>
+          <button class="swatch" data-color="yellow" title="Yellow, shortcut 6"></button>
+        </div>
+        <div class="width-toggle" style="margin-top:8px">
+          <button id="thickBtn" title="Thick fast stroke">Thick</button>
+          <button id="thinBtn" title="Thin slow stroke">Thin</button>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Edit</h2>
+        <div class="tool-grid">
+          <button id="undoBtn" title="Undo, shortcut Command-Z or Control-Z">Undo</button>
+          <button id="redoBtn" title="Redo, shortcut Shift-Command-Z or Control-Y">Redo</button>
+          <button id="clearBtn" class="danger" title="Clear drawing">Clear</button>
+          <button id="gridBtn" title="Toggle grid">Grid</button>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Etch</h2>
+        <div class="row wrap">
+          <button id="etchPenBtn" title="Toggle etch pen, shortcut Space">Pen up</button>
+          <button id="etchShakeBtn" title="Shake clear">Shake</button>
+        </div>
+        <div class="etch-pad" aria-label="Etch movement">
+          <button class="up" data-etch="up" title="Move up, shortcut Up">Up</button>
+          <button class="left" data-etch="left" title="Move left, shortcut Left">Left</button>
+          <button class="home" id="etchHomeBtn" title="Center the etch head">Center</button>
+          <button class="right" data-etch="right" title="Move right, shortcut Right">Right</button>
+          <button class="down" data-etch="down" title="Move down, shortcut Down">Down</button>
+        </div>
+        <div class="slider-row">
+          <span>X</span>
+          <input id="etchX" type="range" min="0" max="1000" value="500" title="Horizontal etch dial">
+          <span id="etchXText">0.50</span>
+        </div>
+        <div class="slider-row">
+          <span>Y</span>
+          <input id="etchY" type="range" min="0" max="1000" value="500" title="Vertical etch dial">
+          <span id="etchYText">0.50</span>
+        </div>
+        <div class="slider-row">
+          <span>Step</span>
+          <input id="etchStep" type="range" min="1" max="80" value="18" title="Etch nudge size">
+          <span id="etchStepText">0.018</span>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Trace</h2>
+        <input id="traceInput" class="hidden" type="file" accept="image/*">
+        <div class="file-grid">
+          <button id="traceLoadBtn" title="Load a reference image to trace over">Image</button>
+          <button id="traceToggleBtn" title="Show or hide the trace, shortcut B">Hide</button>
+          <button id="traceClearBtn" title="Remove the reference image">Clear</button>
+        </div>
+        <div class="slider-row">
+          <span>Dim</span>
+          <input id="traceOpacity" type="range" min="0" max="100" value="35" title="Trace opacity, shortcuts [ and ]">
+          <span id="traceOpacityText">35%</span>
+        </div>
+        <div class="row wrap">
+          <button id="traceGrayBtn" title="Grayscale the reference">Gray</button>
+          <button id="traceInvertBtn" title="Invert the reference">Invert</button>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Files</h2>
+        <input id="fileInput" class="hidden" type="file" accept=".json,.md,.rpaint">
+        <div class="file-grid">
+          <button id="loadBtn" title="Load .rpaint.json or manual">Load</button>
+          <button id="saveBtn" title="Save loadable .rpaint.json">Save</button>
+          <button id="manualBtn" title="Save execution manual">Manual</button>
+          <button id="pngBtn" title="Export PNG">PNG</button>
+        </div>
+      </section>
+    </aside>
+
+    <main class="panel stage" aria-label="Scratchpad simulator">
+      <div class="stage-head">
+        <input id="titleInput" class="title-input" value="Untitled Roost scratchpad drawing" aria-label="Drawing title">
+        <div class="row">
+          <button id="zoomOutBtn" title="Zoom out">-</button>
+          <button id="zoomResetBtn" title="Reset zoom">100%</button>
+          <button id="zoomInBtn" title="Zoom in">+</button>
+        </div>
+      </div>
+      <div class="canvas-wrap">
+        <div id="canvasShell" class="canvas-shell">
+          <canvas id="paint" width="530" height="530" aria-label="Roost scratchpad canvas"></canvas>
+        </div>
+      </div>
+      <div class="statusbar">
+        <span id="status">Ready</span>
+        <span id="cursorStatus">u 0.500, v 0.500</span>
+      </div>
+    </main>
+
+    <aside class="panel inspector" aria-label="Manual and stats">
+      <section class="section">
+        <h2>Stats</h2>
+        <div class="stats">
+          <div class="stat"><span class="muted">Strokes</span><strong id="strokeCount">0</strong></div>
+          <div class="stat"><span class="muted">Actions</span><strong id="actionCount">0</strong></div>
+          <div class="stat"><span class="muted">Tool</span><strong id="toolStat">Pencil</strong></div>
+          <div class="stat"><span class="muted">Mode</span><strong id="modeStat">Thick</strong></div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="row between">
+          <h2>Execution Manual</h2>
+          <button id="refreshManualBtn" title="Refresh manual preview">Refresh</button>
+        </div>
+        <textarea id="manualPreview" spellcheck="false" aria-label="Execution manual preview"></textarea>
+      </section>
+    </aside>
+  </div>
+
+  <script>
+    const VIEW_SIZE = 530;
+    const THICK = 14;
+    const THIN = 5;
+    const PALETTE = {
+      black: "#111111",
+      white: "#ffffff",
+      red: "#d2413c",
+      blue: "#4583d6",
+      green: "#5d9e58",
+      yellow: "#e7b63c",
+    };
+    const PALETTE_ORDER = ["black", "white", "red", "blue", "green", "yellow"];
+    const OVERDRAW_TOLERANCE = 0.05;
+
+    const state = {
+      tool: "pencil",
+      color: "black",
+      mode: "thick",
+      filled: false,
+      strokes: [],
+      undo: [],
+      redo: [],
+      draft: null,
+      pointerStart: null,
+      pointerCurrent: null,
+      dirty: false,
+      grid: false,
+      zoom: 1,
+      etch: {
+        u: 0.5,
+        v: 0.5,
+        pen: false,
+        activeIndex: null,
+        step: 0.018,
+      },
+      trace: {
+        image: null,
+        visible: true,
+        opacity: 0.35,
+        grayscale: false,
+        invert: false,
+        name: null,
+      },
+    };
+
+    const el = {
+      canvas: document.getElementById("paint"),
+      shell: document.getElementById("canvasShell"),
+      tools: document.getElementById("tools"),
+      colors: document.getElementById("colors"),
+      fillBtn: document.getElementById("fillBtn"),
+      thickBtn: document.getElementById("thickBtn"),
+      thinBtn: document.getElementById("thinBtn"),
+      undoBtn: document.getElementById("undoBtn"),
+      redoBtn: document.getElementById("redoBtn"),
+      clearBtn: document.getElementById("clearBtn"),
+      gridBtn: document.getElementById("gridBtn"),
+      newBtn: document.getElementById("newBtn"),
+      loadBtn: document.getElementById("loadBtn"),
+      saveBtn: document.getElementById("saveBtn"),
+      manualBtn: document.getElementById("manualBtn"),
+      pngBtn: document.getElementById("pngBtn"),
+      fileInput: document.getElementById("fileInput"),
+      status: document.getElementById("status"),
+      cursorStatus: document.getElementById("cursorStatus"),
+      strokeCount: document.getElementById("strokeCount"),
+      actionCount: document.getElementById("actionCount"),
+      toolStat: document.getElementById("toolStat"),
+      modeStat: document.getElementById("modeStat"),
+      titleInput: document.getElementById("titleInput"),
+      etchPenBtn: document.getElementById("etchPenBtn"),
+      etchShakeBtn: document.getElementById("etchShakeBtn"),
+      etchHomeBtn: document.getElementById("etchHomeBtn"),
+      etchX: document.getElementById("etchX"),
+      etchY: document.getElementById("etchY"),
+      etchStep: document.getElementById("etchStep"),
+      etchXText: document.getElementById("etchXText"),
+      etchYText: document.getElementById("etchYText"),
+      etchStepText: document.getElementById("etchStepText"),
+      manualPreview: document.getElementById("manualPreview"),
+      refreshManualBtn: document.getElementById("refreshManualBtn"),
+      zoomOutBtn: document.getElementById("zoomOutBtn"),
+      zoomResetBtn: document.getElementById("zoomResetBtn"),
+      zoomInBtn: document.getElementById("zoomInBtn"),
+      traceInput: document.getElementById("traceInput"),
+      traceLoadBtn: document.getElementById("traceLoadBtn"),
+      traceToggleBtn: document.getElementById("traceToggleBtn"),
+      traceClearBtn: document.getElementById("traceClearBtn"),
+      traceOpacity: document.getElementById("traceOpacity"),
+      traceOpacityText: document.getElementById("traceOpacityText"),
+      traceGrayBtn: document.getElementById("traceGrayBtn"),
+      traceInvertBtn: document.getElementById("traceInvertBtn"),
+    };
+
+    const ctx = el.canvas.getContext("2d");
+
+    function title() {
+      return el.titleInput.value.trim() || "Untitled Roost scratchpad drawing";
+    }
+
+    function strokeWidth(mode) {
+      return mode === "thick" ? THICK : THIN;
+    }
+
+    function clamp01(n) {
+      return Math.max(0, Math.min(1, n));
+    }
+
+    function round4(n) {
+      return Math.round(n * 10000) / 10000;
+    }
+
+    function toNormPoint(clientX, clientY) {
+      const rect = el.canvas.getBoundingClientRect();
+      return [
+        round4(clamp01((clientX - rect.left) / rect.width)),
+        round4(clamp01((clientY - rect.top) / rect.height)),
+      ];
+    }
+
+    function pxPoint(point) {
+      return [point[0] * VIEW_SIZE, point[1] * VIEW_SIZE];
+    }
+
+    function drawStroke(stroke, options = {}) {
+      const [color, mode, points] = stroke;
+      if (!points.length) return;
+      ctx.save();
+      ctx.strokeStyle = PALETTE[color];
+      ctx.fillStyle = PALETTE[color];
+      ctx.lineWidth = strokeWidth(mode);
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      if (options.preview) {
+        ctx.globalAlpha = 0.72;
+        ctx.setLineDash([8, 5]);
+      }
+      const [x0, y0] = pxPoint(points[0]);
+      if (points.length === 1) {
+        ctx.beginPath();
+        ctx.arc(x0, y0, Math.max(1, strokeWidth(mode) / 2), 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+        return;
+      }
+      ctx.beginPath();
+      ctx.moveTo(x0, y0);
+      for (let i = 1; i < points.length; i += 1) {
+        const [x, y] = pxPoint(points[i]);
+        ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function setupCanvasResolution() {
+      const dpr = window.devicePixelRatio || 1;
+      el.canvas.width = VIEW_SIZE * dpr;
+      el.canvas.height = VIEW_SIZE * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      drawAll();
+    }
+
+    function drawEtchCursor() {
+      const [x, y] = pxPoint([state.etch.u, state.etch.v]);
+      ctx.save();
+      ctx.strokeStyle = state.etch.pen ? PALETTE.red : PALETTE.blue;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(x - 9, y);
+      ctx.lineTo(x + 9, y);
+      ctx.moveTo(x, y - 9);
+      ctx.lineTo(x, y + 9);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawTraceImage() {
+      const t = state.trace;
+      if (!t.image || !t.visible || t.opacity <= 0) return;
+      const iw = t.image.naturalWidth || t.image.width;
+      const ih = t.image.naturalHeight || t.image.height;
+      if (!iw || !ih) return;
+      const scale = Math.min(VIEW_SIZE / iw, VIEW_SIZE / ih); // contain-fit
+      const w = iw * scale, h = ih * scale;
+      const x = (VIEW_SIZE - w) / 2, y = (VIEW_SIZE - h) / 2;  // centered
+      ctx.save();
+      ctx.globalAlpha = t.opacity;
+      const f = `${t.grayscale ? "grayscale(1) " : ""}${t.invert ? "invert(1)" : ""}`.trim();
+      if (f) ctx.filter = f;
+      ctx.drawImage(t.image, x, y, w, h);
+      ctx.restore();
+    }
+
+    function loadTraceImage(file) {
+      if (!file || !file.type || !file.type.startsWith("image/")) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          state.trace.image = img;
+          state.trace.visible = true;
+          state.trace.name = file.name || "pasted image";
+          drawAll();
+          setStatus(`Trace: ${state.trace.name}`);
+        };
+        img.onerror = () => window.alert("Could not load that image.");
+        img.src = String(reader.result); // data URL → no canvas taint
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function drawAll() {
+      ctx.save();
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, VIEW_SIZE, VIEW_SIZE);
+      drawTraceImage();
+      for (const stroke of state.strokes) drawStroke(stroke);
+      if (state.draft) drawStroke(state.draft, { preview: true });
+      drawEtchCursor();
+      ctx.restore();
+      updateUi();
+    }
+
+    function normDistance(a, b) {
+      return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
+    }
+
+    function activeColor() {
+      return state.tool === "eraser" ? "white" : state.color;
+    }
+
+    function addStrokeGroup(group) {
+      if (!group.length) return;
+      state.strokes.push(...group);
+      state.undo.push(group);
+      state.redo = [];
+      state.dirty = true;
+      refreshManualPreview(false);
+      drawAll();
+    }
+
+    function setTool(tool) {
+      finalizeEtchStroke();
+      state.tool = tool;
+      state.draft = null;
+      drawAll();
+    }
+
+    function setColor(color) {
+      finalizeEtchStroke();
+      state.color = color;
+      drawAll();
+    }
+
+    function setMode(mode) {
+      finalizeEtchStroke();
+      state.mode = mode;
+      drawAll();
+    }
+
+    function toggleFill() {
+      state.filled = !state.filled;
+      drawAll();
+    }
+
+    function constrainPoint(start, point, tool) {
+      const dx = point[0] - start[0];
+      const dy = point[1] - start[1];
+      if (tool === "line") {
+        const angle = Math.atan2(dy, dx);
+        const snapped = Math.round(angle / (Math.PI / 4)) * (Math.PI / 4);
+        const dist = Math.hypot(dx, dy);
+        return [round4(clamp01(start[0] + Math.cos(snapped) * dist)), round4(clamp01(start[1] + Math.sin(snapped) * dist))];
+      }
+      const side = Math.min(Math.abs(dx), Math.abs(dy));
+      return [
+        round4(clamp01(start[0] + Math.sign(dx || 1) * side)),
+        round4(clamp01(start[1] + Math.sign(dy || 1) * side)),
+      ];
+    }
+
+    function ellipsePoints(start, end, steps = 36) {
+      const cx = (start[0] + end[0]) / 2;
+      const cy = (start[1] + end[1]) / 2;
+      const rx = Math.abs(end[0] - start[0]) / 2;
+      const ry = Math.abs(end[1] - start[1]) / 2;
+      const points = [];
+      for (let i = 0; i <= steps; i += 1) {
+        const a = Math.PI * 2 * (i / steps);
+        points.push([round4(cx + rx * Math.cos(a)), round4(cy + ry * Math.sin(a))]);
+      }
+      return points.map(([u, v]) => [clamp01(u), clamp01(v)]);
+    }
+
+    function fillRectLines(start, end) {
+      const left = Math.min(start[0], end[0]);
+      const right = Math.max(start[0], end[0]);
+      const top = Math.min(start[1], end[1]);
+      const bottom = Math.max(start[1], end[1]);
+      const spacing = THIN / VIEW_SIZE;
+      const lines = [];
+      for (let v = top + spacing * 0.5; v < bottom; v += spacing) {
+        lines.push([[round4(left), round4(v)], [round4(right), round4(v)]]);
+      }
+      return lines;
+    }
+
+    function fillEllipseLines(start, end) {
+      const cx = (start[0] + end[0]) / 2;
+      const cy = (start[1] + end[1]) / 2;
+      const rx = Math.abs(end[0] - start[0]) / 2;
+      const ry = Math.abs(end[1] - start[1]) / 2;
+      const spacing = THIN / VIEW_SIZE;
+      const lines = [];
+      if (rx <= 0 || ry <= 0) return lines;
+      for (let v = cy - ry + spacing * 0.5; v < cy + ry; v += spacing) {
+        const dy = v - cy;
+        if (Math.abs(dy) >= ry) continue;
+        const dx = rx * Math.sqrt(Math.max(0, 1 - (dy / ry) ** 2));
+        lines.push([[round4(cx - dx), round4(v)], [round4(cx + dx), round4(v)]]);
+      }
+      return lines;
+    }
+
+    function shapeGroup(tool, start, end, shiftKey = false) {
+      const color = activeColor();
+      const mode = state.mode;
+      const adjustedEnd = shiftKey ? constrainPoint(start, end, tool) : end;
+      if (tool === "line") {
+        return [[color, mode, [start, adjustedEnd]]];
+      }
+      if (tool === "rect") {
+        const group = [[color, mode, [
+          start,
+          [adjustedEnd[0], start[1]],
+          adjustedEnd,
+          [start[0], adjustedEnd[1]],
+          start,
+        ]]];
+        if (state.filled) {
+          for (const pts of fillRectLines(start, adjustedEnd)) group.push([color, "thin", pts]);
+        }
+        return group;
+      }
+      if (tool === "ellipse") {
+        const group = [[color, mode, ellipsePoints(start, adjustedEnd)]];
+        if (state.filled) {
+          for (const pts of fillEllipseLines(start, adjustedEnd)) group.push([color, "thin", pts]);
+        }
+        return group;
+      }
+      return [];
+    }
+
+    function onPointerDown(event) {
+      if (event.button !== 0) return;
+      finalizeEtchStroke();
+      el.canvas.setPointerCapture(event.pointerId);
+      const point = toNormPoint(event.clientX, event.clientY);
+      state.pointerStart = point;
+      state.pointerCurrent = point;
+      state.draft = [activeColor(), state.mode, [point]];
+      drawAll();
+    }
+
+    function onPointerMove(event) {
+      const point = toNormPoint(event.clientX, event.clientY);
+      state.pointerCurrent = point;
+      el.cursorStatus.textContent = `u ${point[0].toFixed(3)}, v ${point[1].toFixed(3)}`;
+      if (!state.pointerStart) return;
+      if (state.tool === "pencil" || state.tool === "eraser") {
+        const pts = state.draft[2];
+        if (normDistance(pts[pts.length - 1], point) >= 0.004) {
+          pts.push(point);
+          drawAll();
+        }
+        return;
+      }
+      const group = shapeGroup(state.tool, state.pointerStart, point, event.shiftKey);
+      state.draft = group[0] || null;
+      drawAll();
+    }
+
+    function onPointerUp(event) {
+      if (!state.pointerStart) return;
+      const point = toNormPoint(event.clientX, event.clientY);
+      let group;
+      if (state.tool === "pencil" || state.tool === "eraser") {
+        group = [state.draft];
+        if (group[0][2].length === 1) {
+          group[0][2].push([round4(point[0] + 0.001), point[1]]);
+        }
+      } else {
+        group = shapeGroup(state.tool, state.pointerStart, point, event.shiftKey);
+      }
+      state.pointerStart = null;
+      state.pointerCurrent = null;
+      state.draft = null;
+      addStrokeGroup(group);
+    }
+
+    function cancelDraft() {
+      state.pointerStart = null;
+      state.pointerCurrent = null;
+      state.draft = null;
+      drawAll();
+    }
+
+    function undo() {
+      finalizeEtchStroke();
+      const group = state.undo.pop();
+      if (!group) return;
+      state.strokes.splice(state.strokes.length - group.length, group.length);
+      state.redo.push(group);
+      state.dirty = true;
+      refreshManualPreview(false);
+      drawAll();
+    }
+
+    function redo() {
+      const group = state.redo.pop();
+      if (!group) return;
+      state.strokes.push(...group);
+      state.undo.push(group);
+      state.dirty = true;
+      refreshManualPreview(false);
+      drawAll();
+    }
+
+    function clearDrawing(confirmFirst = true) {
+      finalizeEtchStroke();
+      if (confirmFirst && state.strokes.length && !window.confirm("Clear this drawing?")) return;
+      state.strokes = [];
+      state.undo = [];
+      state.redo = [];
+      state.draft = null;
+      state.dirty = true;
+      refreshManualPreview(false);
+      drawAll();
+    }
+
+    function newDrawing() {
+      if (state.dirty && !window.confirm("Start a new drawing and discard unsaved changes?")) return;
+      setEtchPen(false);
+      state.strokes = [];
+      state.undo = [];
+      state.redo = [];
+      state.draft = null;
+      state.dirty = false;
+      state.etch.u = 0.5;
+      state.etch.v = 0.5;
+      state.etch.activeIndex = null;
+      state.trace.image = null;
+      state.trace.name = null;
+      refreshManualPreview(true);
+      drawAll();
+    }
+
+    function beginEtchStroke() {
+      if (state.etch.activeIndex !== null) return;
+      state.strokes.push([state.color, state.mode, [[round4(state.etch.u), round4(state.etch.v)]]]);
+      state.etch.activeIndex = state.strokes.length - 1;
+      state.dirty = true;
+    }
+
+    function finalizeEtchStroke(refresh = true) {
+      const idx = state.etch.activeIndex;
+      if (idx === null) return;
+      const stroke = state.strokes[idx];
+      if (!stroke) {
+        state.etch.activeIndex = null;
+        return;
+      }
+      if (stroke[2].length === 1) {
+        stroke[2].push([round4(clamp01(stroke[2][0][0] + 0.001)), stroke[2][0][1]]);
+      }
+      state.undo.push([stroke]);
+      state.redo = [];
+      state.etch.activeIndex = null;
+      if (refresh) refreshManualPreview(false);
+    }
+
+    function setEtchPen(on) {
+      if (on === state.etch.pen) return;
+      state.etch.pen = on;
+      if (on) beginEtchStroke();
+      else finalizeEtchStroke();
+      drawAll();
+    }
+
+    function moveEtchTo(u, v) {
+      state.etch.u = round4(clamp01(u));
+      state.etch.v = round4(clamp01(v));
+      if (state.etch.pen) {
+        beginEtchStroke();
+        const stroke = state.strokes[state.etch.activeIndex];
+        const point = [state.etch.u, state.etch.v];
+        if (normDistance(stroke[2][stroke[2].length - 1], point) > 0.0001) {
+          stroke[2].push(point);
+          state.dirty = true;
+        }
+      }
+      drawAll();
+    }
+
+    function moveEtch(direction, multiplier = 1) {
+      const step = state.etch.step * multiplier;
+      const delta = {
+        up: [0, -step],
+        down: [0, step],
+        left: [-step, 0],
+        right: [step, 0],
+      }[direction];
+      if (!delta) return;
+      moveEtchTo(state.etch.u + delta[0], state.etch.v + delta[1]);
+    }
+
+    function validateStrokes(rawStrokes) {
+      if (!Array.isArray(rawStrokes)) throw new Error("Missing strokes array");
+      return rawStrokes.map((stroke, index) => {
+        if (!Array.isArray(stroke) || stroke.length !== 3) {
+          throw new Error(`Stroke ${index} must be [color, mode, points]`);
+        }
+        const [color, mode, points] = stroke;
+        if (!PALETTE_ORDER.includes(color)) throw new Error(`Unknown color in stroke ${index}: ${color}`);
+        if (!["thick", "thin"].includes(mode)) throw new Error(`Unknown mode in stroke ${index}: ${mode}`);
+        if (!Array.isArray(points) || points.length < 1) throw new Error(`Stroke ${index} has no points`);
+        const clean = points.map((point, pointIndex) => {
+          if (!Array.isArray(point) || point.length !== 2) {
+            throw new Error(`Stroke ${index} point ${pointIndex} must be [u, v]`);
+          }
+          const u = Number(point[0]);
+          const v = Number(point[1]);
+          if (!Number.isFinite(u) || !Number.isFinite(v) ||
+              u < -OVERDRAW_TOLERANCE || u > 1 + OVERDRAW_TOLERANCE ||
+              v < -OVERDRAW_TOLERANCE || v > 1 + OVERDRAW_TOLERANCE) {
+            throw new Error(`Stroke ${index} point ${pointIndex} exceeds safe overdraw`);
+          }
+          return [round4(u), round4(v)];
+        });
+        return [color, mode, clean];
+      });
+    }
+
+    function rpaintData() {
+      finalizeEtchStroke(false);
+      return {
+        version: 1,
+        format: "roost-rpaint",
+        title: title(),
+        palette: PALETTE_ORDER,
+        canvas: { normalized: true, background: "white", size: VIEW_SIZE },
+        strokes: validateStrokes(state.strokes),
+      };
+    }
+
+    function actionCountForStroke(stroke, previousColor) {
+      const [, mode, points] = stroke;
+      let count = 4 + Math.max(0, points.length - 1);
+      if (mode === "thin") count += 1 + Math.max(0, points.length - 1);
+      if (stroke[0] !== previousColor) count += 1;
+      return count;
+    }
+
+    function totalActionCount() {
+      let count = 0;
+      let lastColor = null;
+      for (const stroke of state.strokes) {
+        count += actionCountForStroke(stroke, lastColor);
+        lastColor = stroke[0];
+      }
+      return count;
+    }
+
+    function strokeComputerActions(stroke) {
+      const [, mode, points] = stroke;
+      const actions = [
+        { action: "mouse_move", coordinate: { u: points[0][0], v: points[0][1] } },
+        { action: "left_mouse_down" },
+      ];
+      if (mode === "thin") actions.push({ action: "wait", duration: 0.05 });
+      for (let i = 1; i < points.length; i += 1) {
+        actions.push({ action: "mouse_move", coordinate: { u: points[i][0], v: points[i][1] } });
+        if (mode === "thin") actions.push({ action: "wait", duration: 0.04 });
+      }
+      actions.push({ action: "left_mouse_up" });
+      actions.push({ action: "wait", duration: 0.1 });
+      return actions;
+    }
+
+    function manualData() {
+      const drawing = rpaintData();
+      const execution = [];
+      let lastColor = null;
+      drawing.strokes.forEach((stroke, index) => {
+        const [color, mode, points] = stroke;
+        if (color !== lastColor) {
+          execution.push({ type: "select_color", color, coordinate: `swatches.${color}` });
+          lastColor = color;
+        }
+        execution.push({
+          type: "stroke",
+          stroke_index: index,
+          color,
+          mode,
+          pace: mode === "thin" ? "slow; wait 0.04 seconds between points" : "fast continuous movement",
+          points,
+          computer_use_actions: strokeComputerActions(stroke),
+        });
+      });
+      return {
+        version: 1,
+        format: "roost.execution-manual",
+        kind: "roost-scratchpad-execution-manual",
+        title: title(),
+        createdAt: new Date().toISOString(),
+        generated_at: new Date().toISOString(),
+        target: {
+          platform: "macOS",
+          app: "Roost",
+          surface: "scratchpad",
+          automation: "computer-use-mouse",
+          actions: ["left_click", "mouse_move", "left_mouse_down", "left_mouse_up", "wait"],
+        },
+        coordinate_formula: {
+          x: "canvas_top_left.x + u * (canvas_bottom_right.x - canvas_top_left.x)",
+          y: "canvas_top_left.y + v * (canvas_bottom_right.y - canvas_top_left.y)",
+        },
+        pacing: {
+          preflightCountdownSec: 3,
+          colorSwitchWaitSec: 0.15,
+          mouseDownSettleSec: 0.05,
+          thinInterMoveWaitSec: 0.04,
+          thickInterMoveWaitSec: 0,
+          strokeEndWaitSec: 0.1,
+          maxActionsPerBatch: 64,
+          batchBoundary: "stroke",
+          reselectColorOnResume: true,
+        },
+        validation: {
+          requireAccessibilityPermission: true,
+          requireCanvasAspectRatio: 1.0,
+          canvasAspectTolerance: 0.03,
+          requireAllPaletteSwatches: true,
+          allowNormalizedOverdraw: OVERDRAW_TOLERANCE,
+          requireFinitePoints: true,
+        },
+        calibration: [
+          "Open Roost on macOS and open the message scratchpad.",
+          "Record canvas_top_left by hovering the top-left corner of the drawable square.",
+          "Record canvas_bottom_right by hovering the bottom-right corner of the drawable square.",
+          "Record swatches.black, swatches.white, swatches.red, swatches.blue, swatches.green, and swatches.yellow by hovering each swatch center.",
+          "For each normalized point [u, v], move to x/y using the coordinate formula.",
+          "Thin strokes require slow movement with waits. Thick strokes use fast continuous movement.",
+        ],
+        default_swatch_order: PALETTE_ORDER,
+        drawing,
+        execution,
+      };
+    }
+
+    function manualMarkdown() {
+      const data = manualData();
+      const lines = [
+        `# ${data.title}`,
+        "",
+        "Roost scratchpad execution manual for macOS computer-use mouse control.",
+        "",
+        "## Calibration",
+        "",
+        "1. Open Roost on macOS and open the message scratchpad.",
+        "2. Record the drawable canvas top-left and bottom-right points.",
+        "3. Record the six swatch centers: black, white, red, blue, green, yellow.",
+        "4. Convert each normalized point with:",
+        "   - x = canvas_top_left.x + u * (canvas_bottom_right.x - canvas_top_left.x)",
+        "   - y = canvas_top_left.y + v * (canvas_bottom_right.y - canvas_top_left.y)",
+        "5. For thin strokes, wait 0.04 seconds between mouse moves. For thick strokes, move continuously.",
+        "",
+        "## Summary",
+        "",
+        `- Strokes: ${data.drawing.strokes.length}`,
+        `- Approximate computer-use actions: ${totalActionCount()}`,
+        `- Palette: ${PALETTE_ORDER.join(", ")}`,
+        "",
+        "## Loadable Payload",
+        "",
+        "```json",
+        JSON.stringify(data, null, 2),
+        "```",
+        "",
+      ];
+      return lines.join("\n");
+    }
+
+    function refreshManualPreview(force = false) {
+      if (!force && state.strokes.length > 160) return;
+      el.manualPreview.value = manualMarkdown();
+    }
+
+    function downloadText(filename, text, type = "application/json") {
+      const blob = new Blob([text], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function safeStem() {
+      return title().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "roost-drawing";
+    }
+
+    function saveRpaint() {
+      const data = rpaintData();
+      downloadText(`${safeStem()}.rpaint.json`, JSON.stringify(data, null, 2) + "\n");
+      state.dirty = false;
+      updateUi();
+    }
+
+    function saveManual() {
+      downloadText(`${safeStem()}.scratchpad-manual.md`, manualMarkdown(), "text/markdown");
+    }
+
+    function exportPng() {
+      finalizeEtchStroke();
+      const out = document.createElement("canvas");
+      out.width = VIEW_SIZE;
+      out.height = VIEW_SIZE;
+      const outCtx = out.getContext("2d");
+      outCtx.fillStyle = "#ffffff";
+      outCtx.fillRect(0, 0, VIEW_SIZE, VIEW_SIZE);
+      const currentCtx = ctx;
+      const originalCtxMethods = { ctx };
+      state.strokes.forEach((stroke) => {
+        const [color, mode, points] = stroke;
+        outCtx.save();
+        outCtx.strokeStyle = PALETTE[color];
+        outCtx.fillStyle = PALETTE[color];
+        outCtx.lineWidth = strokeWidth(mode);
+        outCtx.lineCap = "round";
+        outCtx.lineJoin = "round";
+        const [x0, y0] = pxPoint(points[0]);
+        if (points.length === 1) {
+          outCtx.beginPath();
+          outCtx.arc(x0, y0, Math.max(1, strokeWidth(mode) / 2), 0, Math.PI * 2);
+          outCtx.fill();
+        } else {
+          outCtx.beginPath();
+          outCtx.moveTo(x0, y0);
+          for (let i = 1; i < points.length; i += 1) {
+            const [x, y] = pxPoint(points[i]);
+            outCtx.lineTo(x, y);
+          }
+          outCtx.stroke();
+        }
+        outCtx.restore();
+      });
+      out.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${safeStem()}.png`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }, "image/png");
+      void currentCtx;
+      void originalCtxMethods;
+    }
+
+    function extractJsonFromText(text) {
+      try {
+        return JSON.parse(text);
+      } catch (err) {
+        const match = text.match(/```json\s*([\s\S]*?)```/);
+        if (!match) throw err;
+        return JSON.parse(match[1]);
+      }
+    }
+
+    function loadPayload(data) {
+      const rawStrokes = data.strokes || (data.drawing && data.drawing.strokes);
+      const loaded = validateStrokes(rawStrokes);
+      finalizeEtchStroke();
+      state.strokes = loaded;
+      state.undo = loaded.map((stroke) => [stroke]);
+      state.redo = [];
+      state.draft = null;
+      state.dirty = false;
+      if (data.title || (data.drawing && data.drawing.title)) {
+        el.titleInput.value = data.title || data.drawing.title;
+      }
+      setEtchPen(false);
+      refreshManualPreview(true);
+      drawAll();
+      setStatus(`Loaded ${loaded.length} strokes`);
+    }
+
+    function openFile(file) {
+      if (!file) return;
+      if (state.dirty && !window.confirm("Load this file and discard unsaved changes?")) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = extractJsonFromText(String(reader.result));
+          loadPayload(data);
+        } catch (error) {
+          window.alert(`Load failed: ${error.message}`);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function setStatus(message) {
+      el.status.textContent = message;
+    }
+
+    function updateUi() {
+      for (const button of el.tools.querySelectorAll("[data-tool]")) {
+        button.classList.toggle("active", button.dataset.tool === state.tool);
+      }
+      for (const button of el.colors.querySelectorAll("[data-color]")) {
+        button.classList.toggle("active", button.dataset.color === state.color);
+      }
+      el.fillBtn.classList.toggle("active", state.filled);
+      el.thickBtn.classList.toggle("active", state.mode === "thick");
+      el.thinBtn.classList.toggle("active", state.mode === "thin");
+      el.gridBtn.classList.toggle("active", state.grid);
+      el.shell.classList.toggle("grid", state.grid);
+      el.etchPenBtn.classList.toggle("active", state.etch.pen);
+      el.etchPenBtn.textContent = state.etch.pen ? "Pen down" : "Pen up";
+      el.strokeCount.textContent = String(state.strokes.length);
+      el.actionCount.textContent = String(totalActionCount());
+      el.toolStat.textContent = state.tool[0].toUpperCase() + state.tool.slice(1);
+      el.modeStat.textContent = state.mode[0].toUpperCase() + state.mode.slice(1);
+      el.status.textContent = `${state.tool} / ${state.mode} / ${state.color}${state.dirty ? " / unsaved" : ""}`;
+      el.cursorStatus.textContent = `u ${state.etch.u.toFixed(3)}, v ${state.etch.v.toFixed(3)}`;
+      el.etchX.value = Math.round(state.etch.u * 1000);
+      el.etchY.value = Math.round(state.etch.v * 1000);
+      el.etchStep.value = Math.round(state.etch.step * 1000);
+      el.etchXText.textContent = state.etch.u.toFixed(2);
+      el.etchYText.textContent = state.etch.v.toFixed(2);
+      el.etchStepText.textContent = state.etch.step.toFixed(3);
+      el.zoomResetBtn.textContent = `${Math.round(state.zoom * 100)}%`;
+      const hasTrace = !!state.trace.image;
+      el.traceToggleBtn.textContent = state.trace.visible ? "Hide" : "Show";
+      el.traceToggleBtn.classList.toggle("active", hasTrace && state.trace.visible);
+      el.traceGrayBtn.classList.toggle("active", state.trace.grayscale);
+      el.traceInvertBtn.classList.toggle("active", state.trace.invert);
+      el.traceOpacity.value = Math.round(state.trace.opacity * 100);
+      el.traceOpacityText.textContent = `${Math.round(state.trace.opacity * 100)}%`;
+      for (const b of [el.traceToggleBtn, el.traceClearBtn, el.traceGrayBtn, el.traceInvertBtn]) {
+        b.disabled = !hasTrace;
+      }
+    }
+
+    function setZoom(zoom) {
+      state.zoom = Math.max(0.5, Math.min(2.5, zoom));
+      const size = Math.round(Math.min(530 * state.zoom, Math.max(280, window.innerHeight * 0.78)));
+      el.shell.style.width = `${size}px`;
+      el.shell.style.height = `${size}px`;
+      updateUi();
+    }
+
+    el.tools.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-tool]");
+      if (button) setTool(button.dataset.tool);
+    });
+
+    el.colors.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-color]");
+      if (button) setColor(button.dataset.color);
+    });
+
+    document.querySelectorAll("[data-etch]").forEach((button) => {
+      button.addEventListener("click", () => moveEtch(button.dataset.etch));
+    });
+
+    el.fillBtn.addEventListener("click", toggleFill);
+    el.thickBtn.addEventListener("click", () => setMode("thick"));
+    el.thinBtn.addEventListener("click", () => setMode("thin"));
+    el.undoBtn.addEventListener("click", undo);
+    el.redoBtn.addEventListener("click", redo);
+    el.clearBtn.addEventListener("click", () => clearDrawing(true));
+    el.gridBtn.addEventListener("click", () => { state.grid = !state.grid; drawAll(); });
+    el.newBtn.addEventListener("click", newDrawing);
+    el.loadBtn.addEventListener("click", () => el.fileInput.click());
+    el.fileInput.addEventListener("change", () => {
+      openFile(el.fileInput.files[0]);
+      el.fileInput.value = "";
+    });
+    el.saveBtn.addEventListener("click", saveRpaint);
+    el.manualBtn.addEventListener("click", saveManual);
+    el.pngBtn.addEventListener("click", exportPng);
+    el.refreshManualBtn.addEventListener("click", () => refreshManualPreview(true));
+    el.etchPenBtn.addEventListener("click", () => setEtchPen(!state.etch.pen));
+    el.etchShakeBtn.addEventListener("click", () => clearDrawing(true));
+    el.etchHomeBtn.addEventListener("click", () => moveEtchTo(0.5, 0.5));
+    el.etchX.addEventListener("input", () => moveEtchTo(Number(el.etchX.value) / 1000, state.etch.v));
+    el.etchY.addEventListener("input", () => moveEtchTo(state.etch.u, Number(el.etchY.value) / 1000));
+    el.etchStep.addEventListener("input", () => {
+      state.etch.step = Number(el.etchStep.value) / 1000;
+      updateUi();
+    });
+    el.zoomOutBtn.addEventListener("click", () => setZoom(state.zoom / 1.2));
+    el.zoomInBtn.addEventListener("click", () => setZoom(state.zoom * 1.2));
+    el.zoomResetBtn.addEventListener("click", () => setZoom(1));
+    el.titleInput.addEventListener("input", () => {
+      state.dirty = true;
+      refreshManualPreview(false);
+      updateUi();
+    });
+
+    el.traceLoadBtn.addEventListener("click", () => el.traceInput.click());
+    el.traceInput.addEventListener("change", () => {
+      loadTraceImage(el.traceInput.files[0]);
+      el.traceInput.value = "";
+    });
+    el.traceToggleBtn.addEventListener("click", () => {
+      if (!state.trace.image) return;
+      state.trace.visible = !state.trace.visible;
+      drawAll();
+    });
+    el.traceClearBtn.addEventListener("click", () => {
+      state.trace.image = null;
+      state.trace.name = null;
+      drawAll();
+      setStatus("Trace cleared");
+    });
+    el.traceOpacity.addEventListener("input", () => {
+      state.trace.opacity = Number(el.traceOpacity.value) / 100;
+      drawAll();
+    });
+    el.traceGrayBtn.addEventListener("click", () => {
+      if (!state.trace.image) return;
+      state.trace.grayscale = !state.trace.grayscale;
+      drawAll();
+    });
+    el.traceInvertBtn.addEventListener("click", () => {
+      if (!state.trace.image) return;
+      state.trace.invert = !state.trace.invert;
+      drawAll();
+    });
+
+    el.shell.addEventListener("dragover", (event) => event.preventDefault());
+    el.shell.addEventListener("drop", (event) => {
+      event.preventDefault();
+      const file = event.dataTransfer && event.dataTransfer.files[0];
+      if (!file) return;
+      if (file.type && file.type.startsWith("image/")) loadTraceImage(file);
+      else openFile(file);
+    });
+    window.addEventListener("paste", (event) => {
+      const items = event.clipboardData && event.clipboardData.items;
+      if (!items) return;
+      for (const item of items) {
+        if (item.type && item.type.startsWith("image/")) {
+          loadTraceImage(item.getAsFile());
+          event.preventDefault();
+          break;
+        }
+      }
+    });
+
+    el.canvas.addEventListener("pointerdown", onPointerDown);
+    el.canvas.addEventListener("pointermove", onPointerMove);
+    el.canvas.addEventListener("pointerup", onPointerUp);
+    el.canvas.addEventListener("pointercancel", cancelDraft);
+    window.addEventListener("resize", setupCanvasResolution);
+
+    document.addEventListener("keydown", (event) => {
+      const tag = event.target && event.target.tagName;
+      if (["INPUT", "TEXTAREA", "SELECT"].includes(tag)) return;
+      const key = event.key.toLowerCase();
+      const command = event.metaKey || event.ctrlKey;
+      if (command && key === "z" && !event.shiftKey) {
+        event.preventDefault();
+        undo();
+        return;
+      }
+      if ((command && key === "z" && event.shiftKey) || (event.ctrlKey && key === "y")) {
+        event.preventDefault();
+        redo();
+        return;
+      }
+      const tools = { p: "pencil", l: "line", r: "rect", o: "ellipse", e: "eraser" };
+      if (tools[key]) {
+        setTool(tools[key]);
+        return;
+      }
+      if (key === "f") toggleFill();
+      if (key === "t") setMode(state.mode === "thick" ? "thin" : "thick");
+      if (key >= "1" && key <= "6") setColor(PALETTE_ORDER[Number(key) - 1]);
+      if (key === "escape") cancelDraft();
+      if (key === " ") {
+        event.preventDefault();
+        setEtchPen(!state.etch.pen);
+      }
+      if (key === "=" || key === "+") setZoom(state.zoom * 1.2);
+      if (key === "-") setZoom(state.zoom / 1.2);
+      if (key === "0") setZoom(1);
+      const arrows = {
+        arrowup: "up",
+        arrowdown: "down",
+        arrowleft: "left",
+        arrowright: "right",
+      };
+      if (arrows[key]) {
+        event.preventDefault();
+        const multiplier = event.shiftKey ? 4 : (event.altKey ? 0.25 : 1);
+        moveEtch(arrows[key], multiplier);
+      }
+      if (key === "b" && state.trace.image) {
+        state.trace.visible = !state.trace.visible;
+        drawAll();
+      }
+      if (key === "[" || key === "]") {
+        const delta = key === "]" ? 0.05 : -0.05;
+        state.trace.opacity = Math.max(0, Math.min(1, state.trace.opacity + delta));
+        drawAll();
+      }
+    });
+
+    window.addEventListener("beforeunload", (event) => {
+      if (!state.dirty) return;
+      event.preventDefault();
+      event.returnValue = "";
+    });
+
+    setupCanvasResolution();
+    setTool("pencil");
+    setColor("black");
+    setMode("thick");
+    refreshManualPreview(true);
+  </script>
+</body>
+</html>
