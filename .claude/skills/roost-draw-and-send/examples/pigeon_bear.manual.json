@@ -1,0 +1,1738 @@
+{
+  "version": 1,
+  "format": "roost.execution-manual",
+  "kind": "roost-scratchpad-execution-manual",
+  "title": "Pigeon Bear self-portrait",
+  "createdAt": "2026-06-27T15:27:57.079165+00:00",
+  "target": {
+    "platform": "macOS",
+    "app": "Roost",
+    "surface": "scratchpad",
+    "automation": "computer-use-mouse",
+    "actions": [
+      "left_click",
+      "mouse_move",
+      "left_mouse_down",
+      "left_mouse_up",
+      "wait"
+    ]
+  },
+  "coordinate_formula": {
+    "x": "canvas_top_left.x + u * (canvas_bottom_right.x - canvas_top_left.x)",
+    "y": "canvas_top_left.y + v * (canvas_bottom_right.y - canvas_top_left.y)"
+  },
+  "pacing": {
+    "preflightCountdownSec": 3,
+    "colorSwitchWaitSec": 0.15,
+    "mouseDownSettleSec": 0.05,
+    "thinInterMoveWaitSec": 0.04,
+    "thickInterMoveWaitSec": 0,
+    "strokeEndWaitSec": 0.1,
+    "maxActionsPerBatch": 64,
+    "batchBoundary": "stroke",
+    "reselectColorOnResume": true
+  },
+  "validation": {
+    "requireAccessibilityPermission": true,
+    "requireCanvasAspectRatio": 1.0,
+    "canvasAspectTolerance": 0.03,
+    "requireAllPaletteSwatches": true,
+    "allowNormalizedOverdraw": 0.05,
+    "requireFinitePoints": true
+  },
+  "calibration": [
+    "Open Roost on macOS and create or open a message scratchpad.",
+    "Hover the mouse over the canvas top-left corner and record canvas_top_left.",
+    "Hover the mouse over the canvas bottom-right corner and record canvas_bottom_right.",
+    "Hover each color swatch center and record swatches.black, swatches.white, swatches.red, swatches.blue, swatches.green, and swatches.yellow.",
+    "Run strokes in order. Select a swatch before the first stroke of each color."
+  ],
+  "palette": [
+    "black",
+    "white",
+    "red",
+    "blue",
+    "green",
+    "yellow"
+  ],
+  "drawing": {
+    "version": 1,
+    "format": "roost-rpaint",
+    "title": "Pigeon Bear self-portrait",
+    "palette": [
+      "black",
+      "white",
+      "red",
+      "blue",
+      "green",
+      "yellow"
+    ],
+    "canvas": {
+      "normalized": true,
+      "background": "white"
+    },
+    "strokes": [
+      [
+        "green",
+        "thick",
+        [
+          [
+            0.2,
+            0.84
+          ],
+          [
+            0.5,
+            0.835
+          ],
+          [
+            0.8,
+            0.84
+          ]
+        ]
+      ],
+      [
+        "black",
+        "thin",
+        [
+          [
+            0.345,
+            0.33
+          ],
+          [
+            0.375,
+            0.295
+          ],
+          [
+            0.42,
+            0.285
+          ],
+          [
+            0.455,
+            0.305
+          ]
+        ]
+      ],
+      [
+        "black",
+        "thin",
+        [
+          [
+            0.345,
+            0.33
+          ],
+          [
+            0.335,
+            0.375
+          ],
+          [
+            0.345,
+            0.43
+          ],
+          [
+            0.375,
+            0.5
+          ],
+          [
+            0.41,
+            0.565
+          ],
+          [
+            0.455,
+            0.625
+          ],
+          [
+            0.51,
+            0.665
+          ]
+        ]
+      ],
+      [
+        "black",
+        "thin",
+        [
+          [
+            0.455,
+            0.305
+          ],
+          [
+            0.52,
+            0.335
+          ],
+          [
+            0.585,
+            0.39
+          ],
+          [
+            0.63,
+            0.455
+          ]
+        ]
+      ],
+      [
+        "black",
+        "thick",
+        [
+          [
+            0.63,
+            0.455
+          ],
+          [
+            0.69,
+            0.535
+          ],
+          [
+            0.745,
+            0.615
+          ]
+        ]
+      ],
+      [
+        "black",
+        "thin",
+        [
+          [
+            0.51,
+            0.665
+          ],
+          [
+            0.585,
+            0.66
+          ],
+          [
+            0.655,
+            0.63
+          ],
+          [
+            0.7,
+            0.595
+          ]
+        ]
+      ],
+      [
+        "black",
+        "thin",
+        [
+          [
+            0.345,
+            0.315
+          ],
+          [
+            0.3,
+            0.325
+          ]
+        ]
+      ],
+      [
+        "white",
+        "thin",
+        [
+          [
+            0.347,
+            0.312
+          ],
+          [
+            0.355,
+            0.308
+          ]
+        ]
+      ],
+      [
+        "red",
+        "thin",
+        [
+          [
+            0.385,
+            0.315
+          ],
+          [
+            0.392,
+            0.312
+          ]
+        ]
+      ],
+      [
+        "green",
+        "thick",
+        [
+          [
+            0.38,
+            0.36
+          ],
+          [
+            0.41,
+            0.375
+          ],
+          [
+            0.435,
+            0.395
+          ]
+        ]
+      ],
+      [
+        "green",
+        "thick",
+        [
+          [
+            0.375,
+            0.4
+          ],
+          [
+            0.405,
+            0.415
+          ],
+          [
+            0.43,
+            0.435
+          ]
+        ]
+      ],
+      [
+        "black",
+        "thin",
+        [
+          [
+            0.45,
+            0.4
+          ],
+          [
+            0.52,
+            0.43
+          ],
+          [
+            0.585,
+            0.485
+          ],
+          [
+            0.63,
+            0.545
+          ]
+        ]
+      ],
+      [
+        "black",
+        "thick",
+        [
+          [
+            0.48,
+            0.5
+          ],
+          [
+            0.545,
+            0.545
+          ],
+          [
+            0.6,
+            0.59
+          ]
+        ]
+      ],
+      [
+        "black",
+        "thick",
+        [
+          [
+            0.46,
+            0.565
+          ],
+          [
+            0.515,
+            0.605
+          ],
+          [
+            0.565,
+            0.645
+          ]
+        ]
+      ],
+      [
+        "red",
+        "thin",
+        [
+          [
+            0.475,
+            0.67
+          ],
+          [
+            0.47,
+            0.715
+          ],
+          [
+            0.462,
+            0.755
+          ]
+        ]
+      ],
+      [
+        "red",
+        "thin",
+        [
+          [
+            0.525,
+            0.675
+          ],
+          [
+            0.528,
+            0.715
+          ],
+          [
+            0.533,
+            0.752
+          ]
+        ]
+      ],
+      [
+        "red",
+        "thin",
+        [
+          [
+            0.435,
+            0.758
+          ],
+          [
+            0.462,
+            0.752
+          ],
+          [
+            0.49,
+            0.758
+          ]
+        ]
+      ],
+      [
+        "red",
+        "thin",
+        [
+          [
+            0.508,
+            0.756
+          ],
+          [
+            0.533,
+            0.75
+          ],
+          [
+            0.558,
+            0.756
+          ]
+        ]
+      ],
+      [
+        "blue",
+        "thin",
+        [
+          [
+            0.68,
+            0.13
+          ],
+          [
+            0.8,
+            0.125
+          ],
+          [
+            0.9,
+            0.13
+          ]
+        ]
+      ]
+    ]
+  },
+  "execution": [
+    {
+      "type": "select_color",
+      "color": "green",
+      "coordinate": "swatches.green"
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 0,
+      "color": "green",
+      "mode": "thick",
+      "pace": "fast continuous movement",
+      "points": [
+        [
+          0.2,
+          0.84
+        ],
+        [
+          0.5,
+          0.835
+        ],
+        [
+          0.8,
+          0.84
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.2,
+            "v": 0.84
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.5,
+            "v": 0.835
+          }
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.8,
+            "v": 0.84
+          }
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "select_color",
+      "color": "black",
+      "coordinate": "swatches.black"
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 1,
+      "color": "black",
+      "mode": "thin",
+      "pace": "slow with 0.04s waits between points",
+      "points": [
+        [
+          0.345,
+          0.33
+        ],
+        [
+          0.375,
+          0.295
+        ],
+        [
+          0.42,
+          0.285
+        ],
+        [
+          0.455,
+          0.305
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.345,
+            "v": 0.33
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "wait",
+          "duration": 0.05
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.375,
+            "v": 0.295
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.42,
+            "v": 0.285
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.455,
+            "v": 0.305
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 2,
+      "color": "black",
+      "mode": "thin",
+      "pace": "slow with 0.04s waits between points",
+      "points": [
+        [
+          0.345,
+          0.33
+        ],
+        [
+          0.335,
+          0.375
+        ],
+        [
+          0.345,
+          0.43
+        ],
+        [
+          0.375,
+          0.5
+        ],
+        [
+          0.41,
+          0.565
+        ],
+        [
+          0.455,
+          0.625
+        ],
+        [
+          0.51,
+          0.665
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.345,
+            "v": 0.33
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "wait",
+          "duration": 0.05
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.335,
+            "v": 0.375
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.345,
+            "v": 0.43
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.375,
+            "v": 0.5
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.41,
+            "v": 0.565
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.455,
+            "v": 0.625
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.51,
+            "v": 0.665
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 3,
+      "color": "black",
+      "mode": "thin",
+      "pace": "slow with 0.04s waits between points",
+      "points": [
+        [
+          0.455,
+          0.305
+        ],
+        [
+          0.52,
+          0.335
+        ],
+        [
+          0.585,
+          0.39
+        ],
+        [
+          0.63,
+          0.455
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.455,
+            "v": 0.305
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "wait",
+          "duration": 0.05
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.52,
+            "v": 0.335
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.585,
+            "v": 0.39
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.63,
+            "v": 0.455
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 4,
+      "color": "black",
+      "mode": "thick",
+      "pace": "fast continuous movement",
+      "points": [
+        [
+          0.63,
+          0.455
+        ],
+        [
+          0.69,
+          0.535
+        ],
+        [
+          0.745,
+          0.615
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.63,
+            "v": 0.455
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.69,
+            "v": 0.535
+          }
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.745,
+            "v": 0.615
+          }
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 5,
+      "color": "black",
+      "mode": "thin",
+      "pace": "slow with 0.04s waits between points",
+      "points": [
+        [
+          0.51,
+          0.665
+        ],
+        [
+          0.585,
+          0.66
+        ],
+        [
+          0.655,
+          0.63
+        ],
+        [
+          0.7,
+          0.595
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.51,
+            "v": 0.665
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "wait",
+          "duration": 0.05
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.585,
+            "v": 0.66
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.655,
+            "v": 0.63
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.7,
+            "v": 0.595
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 6,
+      "color": "black",
+      "mode": "thin",
+      "pace": "slow with 0.04s waits between points",
+      "points": [
+        [
+          0.345,
+          0.315
+        ],
+        [
+          0.3,
+          0.325
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.345,
+            "v": 0.315
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "wait",
+          "duration": 0.05
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.3,
+            "v": 0.325
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "select_color",
+      "color": "white",
+      "coordinate": "swatches.white"
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 7,
+      "color": "white",
+      "mode": "thin",
+      "pace": "slow with 0.04s waits between points",
+      "points": [
+        [
+          0.347,
+          0.312
+        ],
+        [
+          0.355,
+          0.308
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.347,
+            "v": 0.312
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "wait",
+          "duration": 0.05
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.355,
+            "v": 0.308
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "select_color",
+      "color": "red",
+      "coordinate": "swatches.red"
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 8,
+      "color": "red",
+      "mode": "thin",
+      "pace": "slow with 0.04s waits between points",
+      "points": [
+        [
+          0.385,
+          0.315
+        ],
+        [
+          0.392,
+          0.312
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.385,
+            "v": 0.315
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "wait",
+          "duration": 0.05
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.392,
+            "v": 0.312
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "select_color",
+      "color": "green",
+      "coordinate": "swatches.green"
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 9,
+      "color": "green",
+      "mode": "thick",
+      "pace": "fast continuous movement",
+      "points": [
+        [
+          0.38,
+          0.36
+        ],
+        [
+          0.41,
+          0.375
+        ],
+        [
+          0.435,
+          0.395
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.38,
+            "v": 0.36
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.41,
+            "v": 0.375
+          }
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.435,
+            "v": 0.395
+          }
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 10,
+      "color": "green",
+      "mode": "thick",
+      "pace": "fast continuous movement",
+      "points": [
+        [
+          0.375,
+          0.4
+        ],
+        [
+          0.405,
+          0.415
+        ],
+        [
+          0.43,
+          0.435
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.375,
+            "v": 0.4
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.405,
+            "v": 0.415
+          }
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.43,
+            "v": 0.435
+          }
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "select_color",
+      "color": "black",
+      "coordinate": "swatches.black"
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 11,
+      "color": "black",
+      "mode": "thin",
+      "pace": "slow with 0.04s waits between points",
+      "points": [
+        [
+          0.45,
+          0.4
+        ],
+        [
+          0.52,
+          0.43
+        ],
+        [
+          0.585,
+          0.485
+        ],
+        [
+          0.63,
+          0.545
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.45,
+            "v": 0.4
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "wait",
+          "duration": 0.05
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.52,
+            "v": 0.43
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.585,
+            "v": 0.485
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.63,
+            "v": 0.545
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 12,
+      "color": "black",
+      "mode": "thick",
+      "pace": "fast continuous movement",
+      "points": [
+        [
+          0.48,
+          0.5
+        ],
+        [
+          0.545,
+          0.545
+        ],
+        [
+          0.6,
+          0.59
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.48,
+            "v": 0.5
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.545,
+            "v": 0.545
+          }
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.6,
+            "v": 0.59
+          }
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 13,
+      "color": "black",
+      "mode": "thick",
+      "pace": "fast continuous movement",
+      "points": [
+        [
+          0.46,
+          0.565
+        ],
+        [
+          0.515,
+          0.605
+        ],
+        [
+          0.565,
+          0.645
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.46,
+            "v": 0.565
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.515,
+            "v": 0.605
+          }
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.565,
+            "v": 0.645
+          }
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "select_color",
+      "color": "red",
+      "coordinate": "swatches.red"
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 14,
+      "color": "red",
+      "mode": "thin",
+      "pace": "slow with 0.04s waits between points",
+      "points": [
+        [
+          0.475,
+          0.67
+        ],
+        [
+          0.47,
+          0.715
+        ],
+        [
+          0.462,
+          0.755
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.475,
+            "v": 0.67
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "wait",
+          "duration": 0.05
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.47,
+            "v": 0.715
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.462,
+            "v": 0.755
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 15,
+      "color": "red",
+      "mode": "thin",
+      "pace": "slow with 0.04s waits between points",
+      "points": [
+        [
+          0.525,
+          0.675
+        ],
+        [
+          0.528,
+          0.715
+        ],
+        [
+          0.533,
+          0.752
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.525,
+            "v": 0.675
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "wait",
+          "duration": 0.05
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.528,
+            "v": 0.715
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.533,
+            "v": 0.752
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 16,
+      "color": "red",
+      "mode": "thin",
+      "pace": "slow with 0.04s waits between points",
+      "points": [
+        [
+          0.435,
+          0.758
+        ],
+        [
+          0.462,
+          0.752
+        ],
+        [
+          0.49,
+          0.758
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.435,
+            "v": 0.758
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "wait",
+          "duration": 0.05
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.462,
+            "v": 0.752
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.49,
+            "v": 0.758
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 17,
+      "color": "red",
+      "mode": "thin",
+      "pace": "slow with 0.04s waits between points",
+      "points": [
+        [
+          0.508,
+          0.756
+        ],
+        [
+          0.533,
+          0.75
+        ],
+        [
+          0.558,
+          0.756
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.508,
+            "v": 0.756
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "wait",
+          "duration": 0.05
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.533,
+            "v": 0.75
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.558,
+            "v": 0.756
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    },
+    {
+      "type": "select_color",
+      "color": "blue",
+      "coordinate": "swatches.blue"
+    },
+    {
+      "type": "stroke",
+      "stroke_index": 18,
+      "color": "blue",
+      "mode": "thin",
+      "pace": "slow with 0.04s waits between points",
+      "points": [
+        [
+          0.68,
+          0.13
+        ],
+        [
+          0.8,
+          0.125
+        ],
+        [
+          0.9,
+          0.13
+        ]
+      ],
+      "computer_use_actions": [
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.68,
+            "v": 0.13
+          }
+        },
+        {
+          "action": "left_mouse_down"
+        },
+        {
+          "action": "wait",
+          "duration": 0.05
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.8,
+            "v": 0.125
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "mouse_move",
+          "coordinate": {
+            "u": 0.9,
+            "v": 0.13
+          }
+        },
+        {
+          "action": "wait",
+          "duration": 0.04
+        },
+        {
+          "action": "left_mouse_up"
+        },
+        {
+          "action": "wait",
+          "duration": 0.1
+        }
+      ]
+    }
+  ]
+}
