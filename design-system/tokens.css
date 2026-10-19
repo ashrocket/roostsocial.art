@@ -1,0 +1,33 @@
+/* Roost Social Gallery — generated from tokens.json */
+:root, [data-theme="dark"] {
+  --bg: #0e1116;
+  --image-base: #ffffff;
+  --card: #1a212b;
+  --ink: #e8edf4;
+  --muted: #93a1b3;
+  --gold: #e7b63c;
+  --blue: #4583d6;
+  --button-label: #1a1409;
+  --tag: #243043;
+  --line: #2a3340;
+  --line-input: #34425a;
+}
+:root {
+  --space-sm: 0.4rem;
+  --space-md: 0.8rem;
+  --space-lg: 1rem;
+  --space-xl: 1.2rem;
+  --radius-tile: 14px;
+  --radius-image: 10px;
+  --radius-control: 8px;
+  --radius-badge: 6px;
+  --radius-pill: 999px;
+  --font-sans: -apple-system, system-ui, sans-serif;
+}
+.body { font-family: var(--font-sans); font-size: 16px; line-height: 1.5em; font-weight: 400; }
+.message { font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.5em; font-weight: 400; }
+.meta { font-family: var(--font-sans); font-size: 0.85rem; line-height: 1.5em; font-weight: 400; }
+.tag { font-family: var(--font-sans); font-size: 0.8rem; line-height: 1.5em; font-weight: 400; }
+.score { font-family: var(--font-sans); font-size: 0.85rem; line-height: 1.5em; font-weight: 600; }
+.button { font-family: var(--font-sans); font-size: 16px; line-height: 1.5em; font-weight: 600; }
+.site-title { font-family: var(--font-sans); font-size: 1.25rem; line-height: 1.5em; font-weight: 400; }

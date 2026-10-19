@@ -1,0 +1,8 @@
+{
+ "n": "roostsocial.art",
+ "target": "design-system",
+ "mode": "v2",
+ "brief": "Canonical surface: the public gallery site (page #0e1116, card #1a212b, text #e8edf4, muted #93a1b3, gold #e7b63c, blue #4583d6, red #d2413c, system font, rounded tiles). v2 decision: the Mac viewer/drawing app light grey palette is a tool surface; list in Drift. Brand note: Roost is the carrier-pigeon messaging app (roostsocial.app); this is its art gallery. Copy controller/RoostDraw/Resources/RoostDraw.icns only if a PNG cannot be found; prefer a PNG/SVG. Hero = gallery header + one tile row.",
+ "ruling": "",
+ "defects": []
+}

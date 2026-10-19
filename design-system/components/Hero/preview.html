@@ -1,0 +1,94 @@
+<!-- @dsCard group="Landing" height=520 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Roost Social Gallery hero</title>
+<link rel="stylesheet" href="../../tokens.css">
+<style>
+  html, body { margin: 0; background: var(--bg); color: var(--ink); }
+  body { font-family: var(--font-sans); font-size: 16px; line-height: 1.5; }
+  a { color: var(--gold); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .bar { display: flex; flex-wrap: wrap; gap: var(--space-lg); align-items: baseline;
+         padding: var(--space-lg) var(--space-xl); border-bottom: 1px solid var(--line); }
+  .site-title { font-size: 1.25rem; margin: 0; font-weight: 400; }
+  .site-title a { color: var(--ink); }
+  .bar nav { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+  .who { margin-left: auto; color: var(--muted); font-size: 0.9rem; }
+  .who a.btn { display: inline-block; background: var(--gold); color: var(--button-label);
+               border-radius: var(--radius-control); font-weight: 600; font-size: 1rem;
+               line-height: 1.5; padding: 0.3rem 0.9rem; }
+  .who a.btn:hover { text-decoration: none; }
+  main { padding: var(--space-xl); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: var(--space-lg); }
+  .tile { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-tile); padding: var(--space-md); }
+  .art { display: block; width: 100%; height: auto; border-radius: var(--radius-image); background: var(--image-base); }
+  .msg { margin: 0.4rem 0; font-size: 0.95rem; }
+  .tags a { display: inline-block; background: var(--tag); border-radius: var(--radius-pill);
+            padding: 0.05rem 0.6rem; margin: 0.15rem 0.2rem 0 0; font-size: 0.8rem; }
+  .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.2rem 0.8rem;
+          font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; }
+  .meta a { color: var(--muted); }
+  .score { color: var(--gold); font-weight: 600; }
+  .badge { display: inline-block; background: var(--tag); border-radius: var(--radius-badge);
+           padding: 0.05rem 0.45rem; font-size: 0.78rem; color: var(--muted); }
+  .ink { fill: none; stroke: var(--bg); stroke-width: 3; stroke-linecap: round; }
+  .ground { fill: var(--image-base); }
+  .dot { fill: var(--gold); }
+  .sky { fill: var(--blue); }
+</style>
+</head>
+<body>
+<header class="bar">
+  <h1 class="site-title"><a href="#">roostsocial.art</a></h1>
+  <nav><a href="#">recent</a> <a href="#">popular</a> <a href="#">search</a> <a href="#">how-to</a></nav>
+  <span class="who"><a class="btn" href="#">log in</a></span>
+</header>
+<main>
+  <h2>recent</h2>
+  <div class="grid">
+    <div class="tile">
+      <svg class="art" viewBox="0 0 240 180" role="img" aria-label="placeholder scratchpad drawing">
+        <rect width="240" height="180" class="ground"/>
+        <path class="ink" d="M24 120 C60 60 96 150 132 96 S196 60 220 110"/>
+        <circle class="dot" cx="176" cy="48" r="16"/>
+      </svg>
+      <p class="msg">first drawing from the scratchpad</p>
+      <div class="tags"><a href="#">#sketch</a></div>
+      <div class="meta"><span>by <a href="#">@username</a></span><span>2026-10-01</span><span class="score">7.5/10</span><span>2 chirps</span><span class="badge">iOS</span></div>
+    </div>
+    <div class="tile">
+      <svg class="art" viewBox="0 0 240 180" role="img" aria-label="placeholder scratchpad drawing">
+        <rect width="240" height="180" class="ground"/>
+        <rect class="sky" x="0" y="0" width="240" height="90"/>
+        <path class="ink" d="M20 140 L80 90 L120 130 L170 80 L220 140"/>
+      </svg>
+      <p class="msg">a view from the water</p>
+      <div class="tags"><a href="#">#water</a> <a href="#">#landscape</a></div>
+      <div class="meta"><span>by <a href="#">@username</a></span><span>2026-10-03</span><span class="score">6.0/10</span><span>1 chirp</span><span class="badge">macOS</span></div>
+    </div>
+    <div class="tile">
+      <svg class="art" viewBox="0 0 240 180" role="img" aria-label="placeholder scratchpad drawing">
+        <rect width="240" height="180" class="ground"/>
+        <circle class="ink" cx="120" cy="90" r="50"/>
+        <circle class="dot" cx="120" cy="90" r="14"/>
+      </svg>
+      <p class="msg">unranked chirp</p>
+      <div class="tags"><a href="#">#round</a></div>
+      <div class="meta"><span>by <a href="#">@username</a></span><span>2026-10-05</span><span>unranked</span><span class="badge">Roost Paint</span></div>
+    </div>
+    <div class="tile">
+      <svg class="art" viewBox="0 0 240 180" role="img" aria-label="placeholder scratchpad drawing">
+        <rect width="240" height="180" class="ground"/>
+        <path class="ink" d="M40 150 Q120 20 200 150"/>
+      </svg>
+      <p class="msg">one stroke, slow and thin</p>
+      <div class="tags"><a href="#">#arc</a></div>
+      <div class="meta"><span>by <a href="#">@username</a></span><span>2026-10-07</span><span class="score">8.5/10</span><span>4 chirps</span></div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

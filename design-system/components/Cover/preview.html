@@ -1,0 +1,39 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Roost Social Gallery cover</title>
+<link rel="stylesheet" href="../../tokens.css">
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg); }
+  svg { display: block; width: 960px; height: 288px; }
+  .f-bg { fill: var(--bg); }
+  .f-card { fill: var(--card); }
+  .f-gold { fill: var(--gold); }
+  .f-blue { fill: var(--blue); }
+  .f-pill { fill: var(--ink); fill-opacity: 0.9; }
+  .name { font-family: var(--font-sans); font-weight: 400; font-size: 72px; letter-spacing: 0; fill: var(--ink); }
+  .tagline { font-family: var(--font-sans); font-weight: 400; font-size: 14px; fill: var(--muted); }
+</style>
+</head>
+<body>
+<svg viewBox="0 0 960 288" role="img" aria-label="Roost Social Gallery cover">
+  <!-- Derivation: 3 solid blocks (card, gold, blue) fill the right half, x 480 to 960, as a quarter-to-half cover.
+       Arrangement: a tall card block at left of the right half, gold and blue stacked at right, all bound to tokens.
+       Pattern: pills (radius-pill 999px, fill ink at 0.9 opacity, contrast 13.77 on card) inside the card block, chosen because the gallery uses rounded tiles and pill tags.
+       Steps and radii: block corners square, pills fully round; name in the system stack at 72px, tagline at 14px. -->
+  <rect class="f-bg" x="0" y="0" width="960" height="288"/>
+  <rect class="f-card" x="480" y="0" width="240" height="288"/>
+  <rect class="f-gold" x="720" y="0" width="240" height="144"/>
+  <rect class="f-blue" x="720" y="144" width="240" height="144"/>
+  <rect class="f-pill" x="504" y="40" width="168" height="36" rx="18"/>
+  <rect class="f-pill" x="504" y="92" width="112" height="36" rx="18"/>
+  <rect class="f-pill" x="504" y="144" width="140" height="36" rx="18"/>
+  <rect class="f-pill" x="504" y="196" width="96" height="36" rx="18"/>
+  <text class="name" x="40" y="214">roostsocial.art</text>
+  <text class="tagline" x="40" y="262">Art arrives by carrier pigeon. Ranks are 1–10 chirps.</text>
+</svg>
+</body>
+</html>

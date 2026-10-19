@@ -1,0 +1,47 @@
+{
+  "project": "roostsocial.art",
+  "what": "A public gallery for scratch-pad drawings made in the Roost carrier-pigeon messaging app. Art arrives by bot, and users rank and tag chirps. Repo README.md:1-5.",
+  "audience": "Roost app users who send drawings, and visitors who browse the gallery.",
+  "landing_job": "The site root (/) is the recent-art gallery, not a marketing landing page. Its job is to show the gallery and link to sign-up and how-to pages (site/src/index.js:53-68).",
+  "surfaces": [
+    {"kind": "web-app", "where": "site/ (Cloudflare Worker and D1, gallery HTML rendered in site/src/index.js)"},
+    {"kind": "mac-app", "where": "controller/RoostDraw (SwiftUI drawing app, Theme.swift colours)"},
+    {"kind": "cli", "where": "publish.py (publish bot, no visual identity)"}
+  ],
+  "public_url": "https://roostsocial.art",
+  "brand_family": "Roost (shares the Roost scratch-pad palette with roost_sim/viewer.html and controller/RoostDraw)",
+  "logo_files": [
+    "controller/RoostDraw/Resources/RoostDraw.icns"
+  ],
+  "existing_ds": {
+    "paths": [],
+    "has_readme_brandbook": false,
+    "has_tokens": false,
+    "has_cover_or_specimen": false,
+    "has_hero_pattern": false,
+    "has_logo_rules": false,
+    "published_artifact": ""
+  },
+  "identity": {
+    "coherent": true,
+    "palette": [
+      {"role": "page background (dark)", "value": "#0e1116", "cite": "site/src/index.js:17"},
+      {"role": "card surface", "value": "#1a212b", "cite": "site/src/index.js:17"},
+      {"role": "primary text", "value": "#e8edf4", "cite": "site/src/index.js:17"},
+      {"role": "muted text", "value": "#93a1b3", "cite": "site/src/index.js:17"},
+      {"role": "accent and links (gold)", "value": "#e7b63c", "cite": "site/src/index.js:17"},
+      {"role": "secondary accent (blue)", "value": "#4583d6", "cite": "site/src/index.js:17"},
+      {"role": "active or record red (viewer)", "value": "#d2413c", "cite": "roost_sim/viewer.html:16"},
+      {"role": "light viewer background", "value": "#f4f5f7", "cite": "roost_sim/viewer.html:10"}
+    ],
+    "type": [
+      {"role": "all site text (system stack)", "family": "-apple-system, system-ui, sans-serif", "cite": "site/src/index.js:31"},
+      {"role": "heading size", "family": "system stack, 1.25rem header h1", "cite": "site/src/index.js:34"}
+    ],
+    "look": "Dark, flat gallery with navy cards, gold links and rounded tiles, all in the system font. The Mac viewer and drawing app use a separate light grey palette, so the two surfaces do not match."
+  },
+  "design_system_dir_conflict": "",
+  "classification": "formalize_from_code",
+  "v2_case": "",
+  "notes": "No design system or brand book exists. No claude.ai artifact or design URL is in the repo. The site has no logo, only an emoji in the header (site/src/index.js:54). The site is dark, while roost_sim and RoostDraw are light. The spec says RoostDraw.icns is absent, but the file exists. Verify before use."
+}
